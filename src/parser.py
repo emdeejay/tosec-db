@@ -190,7 +190,7 @@ if __name__ == '__main__':
 
         for entry in entries:
             info = parse_tosec_name(entry)
-            _uuid = "cunt" #str(uuid.uuid4())
+            _uuid = str(uuid.uuid4())
             print(type(info['title']))
             if not info is None:
                 try:
