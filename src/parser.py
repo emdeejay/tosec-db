@@ -190,14 +190,15 @@ if __name__ == '__main__':
 
         for entry in entries:
             info = parse_tosec_name(entry)
-            _uuid = uuid.uuid4()
+            _uuid = "cunt" #str(uuid.uuid4())
+            print(type(info['title']))
             if not info is None:
                 try:
                     c.execute('INSERT INTO games (platform, title, date, publisher, system, video, country, dev_status, media, copyright, uuid) VALUES(?,?,?,?,?,?,?,?,?,?,?)',\
                         (platform, info['title'], info['date'], info['publisher'], info['system'] if 'system' in info else '', info['video'] if 'video' in info else '', info['country'] if 'country' in info else '', info['dev_status'] if 'dev_status' in info else '', info['media'] if 'media' in info else '', info['copyright'] if 'copyright' in info else '', _uuid))
                     game_id = c.lastrowid
-                    c.executemany('INSERT INTO tags (game_id, tag, uuid) VALUES (?,?,?)', [(game_id, x) for x in info['tags']].append(_uuid))
-                    c.executemany('INSERT INTO fulltags (game_id, tag) VALUES (?,?)', [(game_id, x) for x in info['full_tags']].append(_uuid))
+                    c.executemany('INSERT INTO tags (game_id, tag, uuid) VALUES (?,?,?)', [(game_id, x, _uuid) for x in info['tags']])
+                    c.executemany('INSERT INTO fulltags (game_id, tag) VALUES (?,?,?)', [(game_id, x, _uuid) for x in info['full_tags']])
                 except Exception as e:
                     print('Database error while inserting data: {}'.format(str(e)))
                     sys.exit(1)
@@ -227,13 +228,13 @@ if __name__ == '__main__':
         for game in games:
             info = parse_tosec_name(game.getAttribute('name'))
             if not info is None:
-                _uuid = uuid.uuid4()
+                _uuid = str(uuid.uuid4())
                 try:
-                    c.execute('INSERT INTO games (platform, title, date, publisher, system, video, country, dev_status, media, copyright, uuid) VALUES(?,?,?,?,?,?,?,?,?,?.?)',\
+                    c.execute('INSERT INTO games (platform, title, date, publisher, system, video, country, dev_status, media, copyright, uuid) VALUES(?,?,?,?,?,?,?,?,?,?,?)',\
                         (platform, info['title'], info['date'], info['publisher'], info['system'] if 'system' in info else '', info['video'] if 'video' in info else '', info['country'] if 'country' in info else '', info['dev_status'] if 'dev_status' in info else '', info['media'] if 'media' in info else '', info['copyright'] if 'copyright' in info else '', _uuid))
                     game_id = c.lastrowid
-                    c.executemany('INSERT INTO tags (game_id, tag, uuid) VALUES (?,?,?)', [(game_id, x) for x in info['tags']].append(_uuid))
-                    c.executemany('INSERT INTO fulltags (game_id, tag, uuid) VALUES (?,?,?)', [(game_id, x) for x in info['full_tags']].append(_uuid))
+                    c.executemany('INSERT INTO tags (game_id, tag, uuid) VALUES (?,?,?)', [(game_id, x, _uuid) for x in info['tags']])
+                    c.executemany('INSERT INTO fulltags (game_id, tag, uuid) VALUES (?,?,?)', [(game_id, x, _uuid) for x in info['full_tags']])
                 except Exception as e:
                     print('Database error while inserting data: {}'.format(str(e)))
                     sys.exit(1)
