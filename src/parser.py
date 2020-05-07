@@ -227,6 +227,8 @@ if __name__ == '__main__':
         games = dom.getElementsByTagName('game')
         for game in games:
             info = parse_tosec_name(game.getAttribute('name'))
+            rom = game.getElementsByTagName('rom')[0]
+            print('Name: %s, Size: %s, CRC: %s' % (rom.getAttribute('name'), rom.getAttribute('size'), rom.getAttribute('crc')))
             if not info is None:
                 _uuid = str(uuid.uuid4())
                 try:
